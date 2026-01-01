@@ -5,49 +5,45 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-    <meta name="apple-touch-fullscreen" content="yes">
     <meta name="apple-mobile-web-app-title" content="Liverpool Rummy">
     <meta name="mobile-web-app-capable" content="yes">
     <meta name="theme-color" content="#1A237E">
-    <link rel="manifest" href="manifest.json">
-    <link rel="apple-touch-icon" href="icon-180.png">
     <title>Liverpool Rummy</title>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&display=swap" rel="stylesheet">
     <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-database-compat.js"></script>
     <style>
         :root {
-            --primary: #8B1E3F;
-            --primary-dark: #61152D;
-            --success: #2E7D32;
-            --danger: #B22222;
-            --warning: #D4AF37;
-            --bg: #0C3A1F;
-            --card-bg: #154427;
-            --card-hover: #1E5532;
-            --text: #F5F1E5;
-            --text-muted: #C7C2B5;
-            --hearts: #B22222;
-            --diamonds: #1E88E5;
-            --clubs: #2E7D32;
-            --spades: #1C1C1C;
-            --wild: #7B1FA2;
+            --primary: #FF5722;
+            --primary-dark: #E64A19;
+            --success: #4CAF50;
+            --danger: #F44336;
+            --warning: #FFC107;
+            --bg: #1A237E;
+            --card-bg: #283593;
+            --card-hover: #3949AB;
+            --text: #FFFFFF;
+            --text-muted: #B3E5FC;
+            --hearts: #F44336;
+            --diamonds: #2196F3;
+            --clubs: #4CAF50;
+            --spades: #212121;
+            --wild: #9C27B0;
             --radius: 20px;
-            --yellow-card: #E0C066;
-            --green-card: #2E7D32;
-            --blue-card: #1E88E5;
-            --red-card: #B22222;
+            --yellow-card: #FFEB3B;
+            --green-card: #4CAF50;
+            --blue-card: #2196F3;
+            --red-card: #F44336;
         }
 
         * { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
 
         body {
             font-family: 'Poppins', sans-serif;
-            background: radial-gradient(circle at 20% 20%, rgba(255,255,255,0.05), transparent 25%), radial-gradient(circle at 80% 0%, rgba(255,255,255,0.05), transparent 20%), linear-gradient(180deg, var(--bg), #0a2c18);
+            background: linear-gradient(135deg, var(--bg), #0D47A1);
             min-height: 100vh;
             color: var(--text);
             overflow-x: hidden;
-            overscroll-behavior: none;
         }
 
         .screen { display: none; min-height: 100vh; padding: 20px; animation: fadeIn 0.3s ease; }
@@ -62,10 +58,10 @@
             border: none; border-radius: var(--radius); cursor: pointer; transition: all 0.2s; width: 100%;
             text-transform: uppercase; letter-spacing: 1px;
         }
-        .btn-primary { background: linear-gradient(135deg, var(--primary), var(--primary-dark)); color: white; box-shadow: 0 4px 12px rgba(97,21,45,0.35); }
-        .btn-primary:hover { transform: translateY(-2px) scale(1.01); box-shadow: 0 6px 16px rgba(97,21,45,0.45); }
-        .btn-success { background: linear-gradient(135deg, #2E7D32, #1f5a23); color: white; box-shadow: 0 3px 10px rgba(46,125,50,0.3); }
-        .btn-danger { background: linear-gradient(135deg, #B22222, #7d1616); color: white; box-shadow: 0 3px 10px rgba(178,34,34,0.3); }
+        .btn-primary { background: linear-gradient(135deg, var(--primary), var(--primary-dark)); color: white; box-shadow: 0 6px 20px rgba(255,87,34,0.5); }
+        .btn-primary:hover { transform: translateY(-3px) scale(1.02); box-shadow: 0 8px 25px rgba(255,87,34,0.6); }
+        .btn-success { background: linear-gradient(135deg, var(--success), #388E3C); color: white; box-shadow: 0 4px 15px rgba(76,175,80,0.4); }
+        .btn-danger { background: linear-gradient(135deg, var(--danger), #C62828); color: white; box-shadow: 0 4px 15px rgba(244,67,54,0.4); }
         .btn-secondary { background: var(--card-bg); color: var(--text); border: 3px solid var(--warning); }
         .btn-secondary:hover { background: var(--card-hover); transform: scale(1.02); }
         .btn:disabled { opacity: 0.5; cursor: not-allowed; transform: none !important; }
@@ -127,96 +123,18 @@
         .remove-btn { background: var(--danger); border: none; color: white; width: 28px; height: 28px; border-radius: 50%; cursor: pointer; font-size: 1rem; }
 
         /* Game Screen */
-        #game-screen { padding: calc(10px + env(safe-area-inset-top, 0px)) 10px 12px; background: linear-gradient(180deg, var(--bg), #0a2c18); }
+        #game-screen { padding: 10px; background: linear-gradient(180deg, var(--bg), #0D47A1); }
         .game-header { display: flex; justify-content: space-between; align-items: center; padding: 15px 20px; background: linear-gradient(135deg, var(--card-bg), #1565C0); border-radius: var(--radius); margin-bottom: 12px; border: 2px solid var(--warning); }
         .contract-info { text-align: left; }
         .contract-num { font-size: 0.85rem; color: var(--text-muted); text-transform: uppercase; letter-spacing: 1px; }
         .contract-desc { font-size: 1.2rem; font-weight: 800; color: var(--warning); text-shadow: 1px 1px 2px rgba(0,0,0,0.3); }
         .game-stats { text-align: right; font-size: 0.9rem; color: var(--text-muted); }
         .game-stats div { margin-bottom: 2px; }
-        .header-actions { display: flex; align-items: center; gap: 10px; }
-        .sound-btn {
-            width: 42px; height: 42px;
-            border-radius: 50%;
-            border: 2px solid var(--warning);
-            background: var(--card-hover);
-            color: var(--warning);
-            font-size: 1.2rem;
-            cursor: pointer;
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-            transition: all 0.2s ease;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.25);
-        }
-        .sound-btn:hover { transform: translateY(-2px) scale(1.05); background: var(--card-bg); }
-        .sound-btn:active { transform: translateY(0); }
-        /* Tutorial tip */
-        .tutorial-tip {
-            position: fixed;
-            left: 50%;
-            bottom: 20px;
-            transform: translateX(-50%);
-            max-width: 520px;
-            width: calc(100% - 30px);
-            background: rgba(0,0,0,0.7);
-            border: 2px solid var(--warning);
-            color: #fff;
-            padding: 14px 16px;
-            border-radius: 14px;
-            display: none;
-            align-items: center;
-            justify-content: space-between;
-            gap: 12px;
-            z-index: 1200;
-            box-shadow: 0 10px 25px rgba(0,0,0,0.4);
-            backdrop-filter: blur(4px);
-        }
-        .tutorial-tip.active { display: flex; }
-        .tutorial-text { font-size: 0.95rem; line-height: 1.4; }
-        .tutorial-controls { display: flex; gap: 8px; }
-        .tutorial-btn { padding: 8px 14px; border-radius: 10px; border: 2px solid var(--warning); background: rgba(0,0,0,0.3); color: var(--warning); font-weight: 700; cursor: pointer; }
-        
-        /* Guide (Clippy) */
-        .clippy {
-            position: fixed;
-            bottom: 16px;
-            right: 16px;
-            display: flex;
-            gap: 10px;
-            align-items: center;
-            background: rgba(0,0,0,0.75);
-            color: var(--text);
-            padding: 12px 14px;
-            border-radius: 14px;
-            border: 2px solid var(--warning);
-            max-width: 260px;
-            box-shadow: 0 10px 25px rgba(0,0,0,0.4);
-            z-index: 1300;
-            backdrop-filter: blur(4px);
-        }
-        .clippy.hidden { display: none; }
-        .clippy-avatar {
-            width: 42px; height: 42px;
-            border-radius: 50%;
-            background: var(--card-hover);
-            border: 2px solid var(--warning);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 1.2rem;
-            box-shadow: 0 0 0 2px rgba(0,0,0,0.2);
-        }
-        .clippy-text { flex: 1; font-size: 0.9rem; line-height: 1.3; }
-        .clippy-actions { display: flex; gap: 6px; }
-        .clippy-btn { border: 1px solid var(--warning); background: rgba(0,0,0,0.3); color: var(--warning); border-radius: 10px; padding: 4px 8px; font-size: 0.8rem; cursor: pointer; }
 
         .turn-indicator { text-align: center; padding: 18px; background: var(--card-bg); border-radius: var(--radius); margin-bottom: 12px; font-weight: 700; font-size: 1.1rem; border: 3px solid transparent; }
         .turn-indicator.your-turn { background: linear-gradient(135deg, var(--success), #2E7D32); color: white; animation: turnPulse 1.5s infinite; border-color: #81C784; }
         .turn-indicator.waiting { color: var(--text-muted); background: var(--card-bg); }
         @keyframes turnPulse { 0%, 100% { box-shadow: 0 0 0 0 rgba(76,175,80,0.6); transform: scale(1); } 50% { box-shadow: 0 0 20px 5px rgba(76,175,80,0.3); transform: scale(1.02); } }
-        .cpu-status { text-align:center; font-size:0.9rem; color: var(--text-muted); margin-bottom: 6px; }
-        .cpu-status.active { color: var(--warning); }
 
         .opponents-row { display: flex; gap: 12px; overflow-x: auto; padding: 12px 5px; margin-bottom: 12px; justify-content: center; flex-wrap: wrap; }
         .opponent-card { flex-shrink: 0; background: linear-gradient(180deg, var(--card-bg), #1565C0); border-radius: var(--radius); padding: 15px 20px; min-width: 120px; text-align: center; border: 3px solid transparent; transition: all 0.3s ease; }
@@ -227,27 +145,21 @@
         .opponent-status { font-size: 0.8rem; color: var(--text-muted); margin-top: 4px; }
         .laid-badge { font-size: 0.7rem; background: linear-gradient(135deg, var(--success), #2E7D32); color: white; padding: 4px 10px; border-radius: 12px; margin-top: 6px; display: inline-block; font-weight: 700; }
 
-        .table-area { display: flex; justify-content: center; gap: 40px; padding: 22px; margin-bottom: 10px; }
+        .table-area { display: flex; justify-content: center; gap: 50px; padding: 25px; margin-bottom: 10px; }
         .pile { text-align: center; }
         .pile-label { font-size: 0.9rem; color: var(--warning); margin-bottom: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; }
         .pile-cards { position: relative; width: 85px; height: 120px; }
 
-        .card { width: 85px; height: 120px; border-radius: 16px; display: flex; flex-direction: column; align-items: center; justify-content: center; font-weight: 800; cursor: pointer; transition: all 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275); user-select: none; -webkit-user-select: none; -webkit-touch-callout: none; position: relative; overflow: hidden; touch-action: manipulation; }
-        .touch .card { width: 72px; height: 102px; }
-        .touch .pile-cards { width: 72px; height: 102px; }
-        .touch .hand-cards { gap: 8px; }
-        .touch .table-area { gap: 22px; padding: 10px; }
-        .touch #game-screen { padding: 6px 8px; }
-        .touch .hand-cards { min-height: 120px; }
+        .card { width: 85px; height: 120px; border-radius: 16px; display: flex; flex-direction: column; align-items: center; justify-content: center; font-weight: 800; cursor: pointer; transition: all 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275); user-select: none; position: relative; overflow: hidden; }
         .card-back { background: linear-gradient(135deg, #FF5722, #E64A19); border: 4px solid rgba(255,255,255,0.3); box-shadow: 0 4px 15px rgba(0,0,0,0.3); }
         .card-back::before { content: ''; position: absolute; inset: 8px; border: 3px solid rgba(255,255,255,0.2); border-radius: 10px; }
         .card-back::after { content: '🎴'; font-size: 2.5rem; opacity: 0.5; }
-        .card-front { background: #fdfaf5; border: 4px solid #2b2b2b; color: #2b2b2b; box-shadow: 0 4px 15px rgba(0,0,0,0.2); }
-        .card-front.hearts { background: linear-gradient(180deg, #fdfaf5 0%, #f7e3e0 100%); color: #B22222; border-color: #B22222; }
-        .card-front.diamonds { background: linear-gradient(180deg, #fdfaf5 0%, #e3e8f7 100%); color: #1E88E5; border-color: #1E88E5; }
-        .card-front.clubs { background: linear-gradient(180deg, #fdfaf5 0%, #e3f2e8 100%); color: #2E7D32; border-color: #2E7D32; }
-        .card-front.spades { background: linear-gradient(180deg, #fdfaf5 0%, #ededed 100%); color: #1C1C1C; border-color: #1C1C1C; }
-        .card-front.wild { background: linear-gradient(135deg, #6a1b9a, #7B1FA2, #9C27B0); color: #fdfaf5; border-color: #D4AF37; animation: wildPulse 2s ease-in-out infinite; }
+        .card-front { background: white; border: 4px solid #333; color: #333; box-shadow: 0 4px 15px rgba(0,0,0,0.2); }
+        .card-front.hearts { background: linear-gradient(180deg, #fff 0%, #ffe0e0 100%); color: #D32F2F; border-color: #D32F2F; }
+        .card-front.diamonds { background: linear-gradient(180deg, #fff 0%, #e0e8ff 100%); color: #1976D2; border-color: #1976D2; }
+        .card-front.clubs { background: linear-gradient(180deg, #fff 0%, #e0ffe0 100%); color: #388E3C; border-color: #388E3C; }
+        .card-front.spades { background: linear-gradient(180deg, #fff 0%, #e0e0e0 100%); color: #212121; border-color: #212121; }
+        .card-front.wild { background: linear-gradient(135deg, #9C27B0, #7B1FA2, #E91E63); color: white; border-color: #FFD700; animation: wildPulse 2s ease-in-out infinite; }
         @keyframes wildPulse { 0%, 100% { box-shadow: 0 0 10px #9C27B0; } 50% { box-shadow: 0 0 25px #E91E63, 0 0 35px #9C27B0; } }
         
         /* Custom Joker Card */
@@ -286,23 +198,6 @@
         .card-suit { font-size: 2rem; line-height: 1; }
         .card:hover:not(.card-back) { transform: translateY(-8px) scale(1.05); box-shadow: 0 15px 30px rgba(0,0,0,0.3); }
         .card.selected { transform: translateY(-25px) scale(1.1); box-shadow: 0 20px 40px rgba(255,87,34,0.5); border-color: var(--warning) !important; animation: selectedBounce 0.5s ease; }
-        .touch .card.selected { transform: translateY(-12px) scale(1.04); }
-        .card.selected::after {
-            content: '✓';
-            position: absolute;
-            top: 6px;
-            right: 6px;
-            width: 24px;
-            height: 24px;
-            border-radius: 50%;
-            background: var(--warning);
-            color: #000;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-weight: 900;
-            box-shadow: 0 0 0 2px rgba(0,0,0,0.3);
-        }
         @keyframes selectedBounce { 0% { transform: translateY(0) scale(1); } 50% { transform: translateY(-30px) scale(1.15); } 100% { transform: translateY(-25px) scale(1.1); } }
         .deck-pile .card-back:hover { transform: scale(1.08) rotate(-2deg); }
         .deck-count { position: absolute; bottom: -28px; left: 50%; transform: translateX(-50%); font-size: 0.85rem; color: var(--warning); font-weight: 700; }
@@ -318,11 +213,10 @@
         .meld-cards .card-rank { font-size: 1.1rem; }
         .meld-cards .card-suit { font-size: 1.2rem; }
 
-        .hand-area { background: linear-gradient(180deg, var(--card-bg), #0f2f1b); border-radius: var(--radius) var(--radius) 0 0; padding: 18px; margin: 0 -10px calc(-10px + env(safe-area-inset-bottom, 0px)); border-top: 3px solid var(--warning); }
+        .hand-area { background: linear-gradient(180deg, var(--card-bg), #0D47A1); border-radius: var(--radius) var(--radius) 0 0; padding: 18px; margin: 0 -10px -10px; border-top: 3px solid var(--warning); }
         .hand-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; flex-wrap: wrap; gap: 10px; }
         .hand-title { font-weight: 700; font-size: 1.1rem; color: var(--warning); }
         .hand-controls { display: flex; gap: 8px; }
-        .selection-badge { background: rgba(0,0,0,0.4); color: var(--warning); padding: 6px 10px; border-radius: 10px; font-weight: 700; border: 2px solid rgba(255,255,255,0.2); }
         .sort-btn { background: rgba(255,255,255,0.1); border: 2px solid var(--warning); color: var(--warning); padding: 8px 14px; border-radius: 10px; font-size: 0.85rem; cursor: pointer; font-family: inherit; font-weight: 700; transition: all 0.2s; }
         .sort-btn:hover { background: var(--warning); color: #000; }
         .sort-btn:disabled { opacity: 0.3; cursor: not-allowed; }
@@ -361,7 +255,6 @@
         .card.dead-card:hover {
             transform: none !important;
         }
-
         /* Global motion polish */
         body {
             background-size: 300% 300%;
@@ -392,7 +285,7 @@
         }
 
         .action-bar { display: flex; gap: 12px; margin-top: 18px; }
-        .action-btn { flex: 1; padding: 16px; font-family: inherit; font-size: 1rem; font-weight: 800; border: none; border-radius: 12px; cursor: pointer; text-transform: uppercase; letter-spacing: 1px; transition: all 0.2s; box-shadow: 0 4px 12px rgba(0,0,0,0.25); }
+        .action-btn { flex: 1; padding: 16px; font-family: inherit; font-size: 1rem; font-weight: 800; border: none; border-radius: 14px; cursor: pointer; text-transform: uppercase; letter-spacing: 1px; transition: all 0.2s; }
         .action-btn:disabled { opacity: 0.3; cursor: not-allowed; transform: none !important; }
         .action-btn:not(:disabled):hover { transform: translateY(-3px); }
         .btn-laydown { background: linear-gradient(135deg, var(--success), #2E7D32); color: white; box-shadow: 0 4px 15px rgba(76,175,80,0.4); }
@@ -453,6 +346,13 @@
         .next-player-notice-title { font-weight: 700; font-size: 1.1rem; }
 
         /* Leaderboard */
+        .leaderboard { background: linear-gradient(180deg, var(--card-bg), #1565C0); border-radius: var(--radius); padding: 20px; margin-top: 20px; border: 2px solid var(--warning); }
+        .leaderboard-title { font-size: 1.2rem; font-weight: 800; margin-bottom: 15px; display: flex; align-items: center; gap: 10px; color: var(--warning); }
+        .leaderboard-row { display: flex; justify-content: space-between; padding: 12px 18px; background: rgba(0,0,0,0.2); border-radius: 12px; margin-bottom: 10px; border: 2px solid rgba(255,255,255,0.1); }
+        .leaderboard-row.leaderboard-me { background: rgba(255,193,7,0.2); border-color: var(--warning); }
+        .leaderboard-rank { font-weight: 800; color: var(--warning); width: 35px; font-size: 1.1rem; }
+        .leaderboard-name { flex: 1; font-weight: 600; }
+        .leaderboard-wins { font-weight: 800; color: var(--success); }
 
         /* Toast */
         .toast { position: fixed; bottom: 100px; left: 50%; transform: translateX(-50%) translateY(100px); background: linear-gradient(135deg, var(--warning), #FF8F00); color: #000; padding: 18px 32px; border-radius: 50px; font-weight: 800; box-shadow: 0 10px 40px rgba(0,0,0,0.4); opacity: 0; transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275); z-index: 2000; text-align: center; max-width: 90%; font-size: 1.05rem; text-transform: uppercase; letter-spacing: 1px; }
@@ -677,14 +577,6 @@
         <div id="win-confetti"></div>
     </div>
 
-    <!-- Tutorial Tip -->
-    <div class="tutorial-tip" id="tutorial-tip">
-        <div class="tutorial-text" id="tutorial-text"></div>
-        <div class="tutorial-controls">
-            <button class="tutorial-btn" onclick="exitTutorial()">Exit</button>
-        </div>
-    </div>
-
     <!-- BUY BANNER - When it's YOUR turn to buy -->
     <div class="buy-banner" id="buy-banner">
         <div class="buy-banner-content">
@@ -725,7 +617,7 @@
         </div>
         <div class="menu-buttons">
             <button class="btn btn-primary" onclick="showScreen('mode-select')">🎮 Play Game</button>
-            <button class="btn btn-secondary" onclick="rejoinRoom()">↩ Rejoin Online Game</button>
+            <button class="btn btn-secondary" onclick="showLeaderboard()">🏆 Leaderboard</button>
             <button class="btn btn-secondary" onclick="showRules()">📖 How to Play</button>
             <button class="btn btn-secondary" onclick="showCustomizeCards()">🎨 Custom Cards</button>
         </div>
@@ -761,8 +653,6 @@
             <div class="menu-buttons">
                 <button class="btn btn-primary" onclick="showScreen('online-menu')">🌐 Play Online</button>
                 <button class="btn btn-secondary" onclick="showScreen('solo-setup')">🤖 Play vs CPU</button>
-                <button class="btn btn-success" onclick="startTutorial()">🎯 Tutorial</button>
-                <button class="btn btn-success" onclick="quickStartSolo()">▶ Quick Play (CPU)</button>
             </div>
         </div>
     </div>
@@ -840,7 +730,7 @@
                 <div class="players-list-title">Players (<span id="p-count">0</span>/<span id="max-p">3</span>)</div>
                 <div id="players-box"></div>
             </div>
-            <button class="btn btn-secondary" id="add-cpu-btn" onclick="addCPU()" style="margin-bottom:15px;">🤖 Add CPU Player</button>
+            <button class="btn btn-secondary" id="add-cpu-btn" onclick="addCPU()" ?="margin-bottom:15px;">🤖 Add CPU Player</button>
             <button class="btn btn-success" id="start-btn" onclick="startOnlineGame()" disabled>Waiting for players...</button>
         </div>
     </div>
@@ -900,16 +790,12 @@
                 <div class="contract-num">Contract <span id="c-num">1</span> of <span id="c-total">7</span></div>
                 <div class="contract-desc" id="c-desc">2 Sets</div>
             </div>
-            <div class="header-actions">
-                <div class="game-stats">
-                    <div>Deck: <span id="deck-num">0</span></div>
-                    <div>Score: <span id="my-score">0</span></div>
-                </div>
-                <button class="sound-btn" id="sound-toggle" onclick="toggleSound()" title="Toggle sound effects">🔊</button>
+            <div class="game-stats">
+                <div>Deck: <span id="deck-num">0</span></div>
+                <div>Score: <span id="my-score">0</span></div>
             </div>
         </div>
         <div class="turn-indicator" id="turn-ind">Waiting...</div>
-        <div class="cpu-status" id="cpu-status"></div>
         <div class="opponents-row" id="opp-row"></div>
         <div class="table-area">
             <div class="pile deck-pile">
@@ -934,13 +820,9 @@
             <div class="hand-header">
                 <span class="hand-title">Your Hand (<span id="hand-num">0</span>) <span id="my-wins-badge" style="font-size:0.7rem;background:var(--success);padding:2px 6px;border-radius:8px;margin-left:4px;display:none;"></span> <span id="my-prob" style="font-size:0.8rem;margin-left:8px;"></span></span>
                 <div class="hand-controls">
-                    <span class="selection-badge" id="sel-badge">0 selected</span>
-                    <button class="sort-btn" onclick="toggleSortMode()" id="sort-mode-btn">Sort: Suit</button>
-                    <button class="sort-btn" onclick="toggleWildPos()" id="wild-pos-btn">Wild: Auto</button>
-                    <button class="sort-btn" onclick="sortHand()">Apply Sort</button>
-                    <button class="sort-btn" onclick="clearSelection()">Clear Sel</button>
                     <button class="sort-btn" id="btn-move-left" onclick="moveCardLeft()" title="Move Left">◀</button>
                     <button class="sort-btn" id="btn-move-right" onclick="moveCardRight()" title="Move Right">▶</button>
+                    <button class="sort-btn" onclick="sortHand()">Auto Sort</button>
                 </div>
             </div>
             <div class="hand-cards" id="hand-box"></div>
@@ -948,7 +830,6 @@
                 <button class="action-btn btn-laydown" id="btn-lay" onclick="layDown()" disabled>Lay Down</button>
                 <button class="action-btn btn-addto" id="btn-add" onclick="showAddModal()" disabled>Add To</button>
                 <button class="action-btn btn-discard" id="btn-disc" onclick="doDiscard()" disabled>Discard</button>
-                <button class="action-btn btn-secondary" onclick="restartContract()">Restart</button>
             </div>
         </div>
     </div>
@@ -964,16 +845,6 @@
 
     <!-- TOAST -->
     <div class="toast" id="toast"></div>
-    
-    <!-- Guide -->
-    <div class="clippy hidden" id="clippy">
-        <div class="clippy-avatar">💬</div>
-        <div class="clippy-text" id="clippy-text">Tip text</div>
-        <div class="clippy-actions">
-            <button class="clippy-btn" onclick="nextClippy()">Next</button>
-            <button class="clippy-btn" onclick="hideClippy()">×</button>
-        </div>
-    </div>
 
     <script>
         // Firebase
@@ -1063,94 +934,6 @@
         const RANK_VAL = {A:1,2:2,3:3,4:4,5:5,6:6,7:7,8:8,9:9,10:10,J:11,Q:12,K:13};
         const POINTS = {A:15,2:20,3:5,4:5,5:5,6:5,7:5,8:5,9:5,10:10,J:10,Q:10,K:10,JOKER:20};
         const SUIT_SYM = {hearts:'♥',diamonds:'♦',clubs:'♣',spades:'♠'};
-        const IS_TOUCH = 'ontouchstart' in window || navigator.maxTouchPoints > 0;
-        let CARD_ID = 0;
-        
-        function runVal(rank, aceHigh = false) {
-            if (rank === 'A') return aceHigh ? 14 : 1;
-            return RANK_VAL[rank] || 0;
-        }
-        function makeCard(suit, rank) {
-            return {suit, rank, wild: rank === '2' || rank === 'JOKER', id: 'c' + (CARD_ID++)};
-        }
-        function sortVal(rank) {
-            return rank === 'A' ? 14 : (RANK_VAL[rank] || 0);
-        }
-        function adjustRunOrder(run) {
-            if (wildPos === 'auto') return run;
-            const naturals = run.filter(c => !c.wild).sort((a,b) => runVal(a.rank,true) - runVal(b.rank,true));
-            const wilds = run.filter(c => c.wild);
-            return wildPos === 'front' ? [...wilds, ...naturals] : [...naturals, ...wilds];
-        }
-        function selectButton(gridSel, val) {
-            const grid = document.querySelector(gridSel);
-            if (!grid) return;
-            grid.querySelectorAll('.option-btn, .diff-btn').forEach(b => b.classList.remove('selected'));
-            const btn = grid.querySelector(`[data-val="${val}"]`);
-            if (btn) btn.classList.add('selected');
-        }
-        function loadSettings() {
-            const mode = localStorage.getItem('lastMode');
-            if (mode === 'quick') {
-                gameMode = 'quick';
-                CONTRACTS = QUICK_CONTRACTS;
-                document.getElementById('play-type-title').textContent = '⚡ Quick Rummy';
-            } else if (mode === 'classic') {
-                gameMode = 'classic';
-                CONTRACTS = CLASSIC_CONTRACTS;
-                document.getElementById('play-type-title').textContent = '🃏 Classic Mode';
-            }
-            const soloName = localStorage.getItem('soloName'); if (soloName) document.getElementById('solo-name').value = soloName;
-            const soloPlayers = localStorage.getItem('soloPlayers'); if (soloPlayers) selectButton('#solo-player-grid', soloPlayers);
-            const soloDiff = localStorage.getItem('soloDiff'); if (soloDiff) selectButton('#diff-grid', soloDiff);
-            const onlineName = localStorage.getItem('onlineName'); if (onlineName) document.getElementById('host-name').value = onlineName;
-            const onlineMax = localStorage.getItem('onlineMax'); if (onlineMax) selectButton('#player-count-grid', onlineMax);
-            const onlineDiff = localStorage.getItem('onlineDiff'); if (onlineDiff) selectButton('#online-diff-grid', onlineDiff);
-        }
-        function registerServiceWorker() {
-            if ('serviceWorker' in navigator) {
-                navigator.serviceWorker.register('sw.js').catch(err => console.log('SW register failed', err));
-            }
-        }
-
-        // Clippy/Guide
-        let clippyIdx = 0;
-        let clippyTimer = null;
-        function initClippy() {
-            const enabled = localStorage.getItem('clippyEnabled') === 'true';
-            if (!enabled) return hideClippy(true);
-            showClippy();
-        }
-        function showClippy() {
-            const el = document.getElementById('clippy');
-            const txt = document.getElementById('clippy-text');
-            if (!el || !txt) return;
-            clippyIdx = Math.floor(Math.random() * CLIPPY_TIPS.length);
-            txt.textContent = CLIPPY_TIPS[clippyIdx];
-            el.classList.remove('hidden');
-            scheduleClippy();
-        }
-        function hideClippy(silent=false) {
-            const el = document.getElementById('clippy');
-            if (el) el.classList.add('hidden');
-            if (!silent) localStorage.setItem('clippyEnabled', 'false');
-            clearTimeout(clippyTimer);
-        }
-        function nextClippy() {
-            const txt = document.getElementById('clippy-text');
-            if (!txt) return;
-            clippyIdx = (clippyIdx + 1) % CLIPPY_TIPS.length;
-            txt.textContent = CLIPPY_TIPS[clippyIdx];
-            scheduleClippy();
-        }
-        function scheduleClippy() {
-            clearTimeout(clippyTimer);
-            clippyTimer = setTimeout(nextClippy, 15000);
-        }
-        function toggleClippySetting(on) {
-            localStorage.setItem('clippyEnabled', on ? 'true' : 'false');
-            if (on) showClippy(); else hideClippy();
-        }
         
         // Game mode contracts
         const CLASSIC_CONTRACTS = [
@@ -1173,37 +956,10 @@
         let gameMode = 'classic';
         
         const CPU_NAMES = ['Ruby','Emerald','Sapphire','Topaz','Amethyst','Opal'];
-        let wildPos = 'auto'; // auto | front | end
-        const CLIPPY_TIPS = [
-            'Need a discard? Tap the pile, but only if the top card isn’t dead (💀).',
-            'You can reorder with ◀ ▶ or Auto Sort. Wilds are always last.',
-            'Runs need 3 naturals; sets need 1 natural. Wilds fill the gaps.',
-            'Dead cards can’t be bought. Look for the 💀 overlay on the discard.',
-            'Use “Restart” in offline games if something feels off.',
-            'Ace can be high in a run (…Q-K-A).',
-            'Touch “Clear Sel” if you grabbed the wrong cards.'
-        ];
 
         // State
         let G = {players:[],deck:[],discard:[],melds:[],cur:0,contract:0,phase:'draw',drawn:false,buyQ:[],buyer:-1,started:false,hostId:null,deadCards:[]};
-        let L = {myId:null,myName:'Player',isHost:false,isOnline:false,code:null,roomRef:null,gameRef:null,sel:[],maxP:3,diff:'easy',tutorial:false};
-        const TUTORIAL_BASIC = [
-            {id:'draw', text:'Tap the DRAW pile to draw a card.', trigger:'after-draw'},
-            {id:'select', text:'Select all the 3s and 5s (two sets) in your hand.', trigger:'selected-basic'},
-            {id:'lay', text:'Tap LAY DOWN to place your sets on the table.', trigger:'laid'},
-            {id:'discard', text:'Select your last card and discard to end your turn.', trigger:'discarded'},
-            {id:'done', text:'Nice! Tutorial complete. Start a real game from the menu.', trigger:null}
-        ];
-        const TUTORIAL_ADV = [
-            {id:'draw', text:'Tap the DISCARD pile to take the top card.', trigger:'after-draw'},
-            {id:'select-run', text:'Select the hearts run 10-J-Q-K-A (A is high).', trigger:'selected-adv'},
-            {id:'lay', text:'Tap LAY DOWN to place your run.', trigger:'laid'},
-            {id:'discard', text:'Discard your last card to finish.', trigger:'discarded'},
-            {id:'done', text:'Great! You bought a discard and made a K-A run.', trigger:null}
-        ];
-        let tutorialStep = null;
-        let tutorialSteps = TUTORIAL_BASIC;
-        let tutorialLevel = 'basic';
+        let L = {myId:null,myName:'Player',isHost:false,isOnline:false,code:null,roomRef:null,gameRef:null,sel:[],maxP:3,diff:'easy'};
         
         // Analytics tracking
         let analytics = {
@@ -1314,8 +1070,6 @@
                 CONTRACTS = CLASSIC_CONTRACTS;
                 document.getElementById('play-type-title').textContent = '🃏 Classic Mode';
             }
-            L.tutorial = false;
-            localStorage.setItem('lastMode', mode);
             showScreen('play-type');
         }
 
@@ -1323,9 +1077,6 @@
         function showScreen(id) {
             document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
             document.getElementById(id).classList.add('active');
-            if (id === 'title-screen') {
-                document.getElementById('clippy')?.classList.add('hidden');
-            }
         }
 
         // Option buttons
@@ -1400,15 +1151,7 @@
             const max = parseInt(document.querySelector('#player-count-grid .selected').dataset.val);
             const diffBtn = document.querySelector('#online-diff-grid .selected');
             L.diff = diffBtn ? diffBtn.dataset.val : 'easy';
-            L.tutorial = false;
-            localStorage.setItem('onlineName', name);
-            localStorage.setItem('onlineMax', max);
-            localStorage.setItem('onlineDiff', L.diff);
             L.myName = name; L.myId = 'p_' + Date.now(); L.isHost = true; L.isOnline = true; L.maxP = max; L.code = genCode();
-            localStorage.setItem('lastRoomCode', L.code);
-            localStorage.setItem('lastPlayerId', L.myId);
-            localStorage.setItem('lastPlayerName', name);
-            localStorage.setItem('lastIsHost', 'true');
             const data = {code: L.code, hostId: L.myId, maxP: max, difficulty: L.diff, players: {[L.myId]: {name, isHost:true, isCPU:false, conn:true}}, started:false};
             try {
                 L.roomRef = db.ref('rooms/' + L.code);
@@ -1426,13 +1169,7 @@
             const name = document.getElementById('join-name').value.trim() || 'Player';
             const code = document.getElementById('room-code-input').value.toUpperCase().trim();
             if (code.length !== 4) return toast('Enter 4-letter code');
-            L.tutorial = false;
             L.myName = name; L.myId = 'p_' + Date.now(); L.isHost = false; L.isOnline = true; L.code = code;
-            localStorage.setItem('onlineName', name);
-            localStorage.setItem('lastRoomCode', code);
-            localStorage.setItem('lastPlayerId', L.myId);
-            localStorage.setItem('lastPlayerName', name);
-            localStorage.setItem('lastIsHost', 'false');
             try {
                 L.roomRef = db.ref('rooms/' + code);
                 const snap = await L.roomRef.once('value');
@@ -1518,39 +1255,11 @@
             showScreen('title-screen');
         }
 
-        async function rejoinRoom() {
-            const code = localStorage.getItem('lastRoomCode');
-            const pid = localStorage.getItem('lastPlayerId');
-            const pname = localStorage.getItem('lastPlayerName');
-            const wasHost = localStorage.getItem('lastIsHost') === 'true';
-            if (!code || !pid || !pname) return toast('No game to rejoin');
-            try {
-                L.myName = pname; L.myId = pid; L.isHost = wasHost; L.isOnline = true; L.code = code;
-                L.roomRef = db.ref('rooms/' + code);
-                const snap = await L.roomRef.once('value');
-                const d = snap.val();
-                if (!d) return toast('Room not found');
-                if (d.started && d.players && d.players[pid]) {
-                    await L.roomRef.child('players/' + pid + '/conn').set(true);
-                } else if (d.players && !d.players[pid]) {
-                    await L.roomRef.child('players/' + pid).set({name:pname, isHost:false, isCPU:false, conn:true});
-                }
-                L.roomRef.child('players/' + pid + '/conn').onDisconnect().set(false);
-                L.roomRef.on('value', onRoom);
-                showScreen('lobby-guest');
-                document.getElementById('display-code-guest').textContent = code;
-                toast('Rejoined room ' + code);
-            } catch (e) {
-                toast('Could not rejoin: ' + e.message);
-            }
-        }
-
         async function startOnlineGame() {
             const snap = await L.roomRef.once('value');
             const d = snap.val();
             const ps = Object.entries(d.players || {}).filter(([,p]) => p.conn !== false);
             L.diff = d.difficulty || 'easy'; // Get difficulty from room data
-            L.tutorial = false;
             initGame(ps.map(([id, p]) => ({id, name: p.name, human: !p.isCPU, cpu: p.isCPU})));
             G.hostId = L.myId;
             await L.roomRef.update({started: true, game: G});
@@ -1629,10 +1338,8 @@
             G = fixGameState(d);
             L.sel = [];
             render();
-            // Host drives CPU turns; reset stuck flags so CPUs don't freeze
-            if (L.isHost) {
-                if (G.phase !== 'buying') cpuBuyingRunning = false;
-                cpuRunning = false;
+            // Only trigger CPU checks if not already running
+            if (L.isHost && !cpuRunning && !cpuBuyingRunning) {
                 setTimeout(() => {
                     checkCPU();
                     checkCPUBuying();
@@ -1654,13 +1361,9 @@
 
         // Solo
         function startSoloGame() {
-            L.tutorial = false;
             const name = document.getElementById('solo-name').value.trim() || 'You';
             const num = parseInt(document.querySelector('#solo-player-grid .selected').dataset.val);
             L.diff = document.querySelector('#diff-grid .selected').dataset.val;
-            localStorage.setItem('soloName', name);
-            localStorage.setItem('soloPlayers', num);
-            localStorage.setItem('soloDiff', L.diff);
             L.myName = name; L.myId = 'human'; L.isHost = true; L.isOnline = false;
             const ps = [{id:'human', name, human:true, cpu:false}];
             const used = [name];
@@ -1678,186 +1381,6 @@
             showScreen('game-screen');
             render();
             if (G.players[0].cpu) setTimeout(cpuTurn, 1000);
-        }
-
-        function restartContract() {
-            // Only available offline/tutorial
-            if (L.isOnline) return toast('Restart only available offline');
-            const players = G.players.map(p => ({id:p.id, name:p.name, human:p.human, cpu:p.cpu, score:p.score}));
-            initGame(players);
-            render();
-            toast('Contract restarted');
-        }
-
-        // Tutorial mode (guided first contract)
-        function startTutorial() {
-            modal('Choose Tutorial', '<p>Select a tutorial focus:</p>', [
-                {text:'Basic (sets/discard)', cls:'btn-primary', fn:() => beginTutorial('basic')},
-                {text:'Advanced (buy discard, K-A run)', cls:'btn-secondary', fn:() => beginTutorial('advanced')},
-                {text:'Cancel', cls:'btn-secondary'}
-            ]);
-        }
-
-        function beginTutorial(level) {
-            L.tutorial = true;
-            tutorialLevel = level;
-            tutorialSteps = level === 'advanced' ? TUTORIAL_ADV : TUTORIAL_BASIC;
-            gameMode = 'tutorial';
-            CONTRACTS = level === 'advanced'
-                ? [{id:1, sets:0, runs:1, cards:7, desc:'Run (Tutorial)'}]
-                : [{id:1, sets:2, runs:0, cards:7, desc:'Sets (Tutorial)'}];
-            resetAnalytics();
-            
-            const you = {id:'human', name:'You', human:true, cpu:false, hand:[], score:0, laid:false};
-            const cpu = {id:'cpu_1', name:'Coach Bot', human:false, cpu:true, hand:[], score:0, laid:false};
-            
-            if (level === 'advanced') {
-                // Run tutorial: buy discard (J♥) and make 10-J-Q-K-A♥
-                you.hand = [
-                    makeCard('hearts','10'), makeCard('hearts','Q'), makeCard('hearts','K'),
-                    makeCard('hearts','A'), makeCard('clubs','2'), makeCard('spades','7'),
-                    makeCard('diamonds','4')
-                ];
-                cpu.hand = [
-                    makeCard('spades','2'), makeCard('clubs','7'), makeCard('hearts','8'),
-                    makeCard('diamonds','9'), makeCard('spades','10'), makeCard('clubs','4'),
-                    makeCard('hearts','Q')
-                ];
-                G = {
-                    players: [you, cpu],
-                    deck: [
-                        makeCard('spades','J'), makeCard('clubs','6'), makeCard('diamonds','9'),
-                        makeCard('clubs','8'), makeCard('hearts','4')
-                    ],
-                    discard: [makeCard('hearts','J')],
-                    melds: [],
-                    cur: 0,
-                    contract: 0,
-                    phase: 'draw',
-                    drawn: false,
-                    buyQ: [],
-                    buyer: -1,
-                    started: true,
-                    hostId: L.myId,
-                    difficulty: 'easy',
-                    deadCards: []
-                };
-            } else {
-                // Basic tutorial: two sets and a discard
-                you.hand = [
-                    makeCard('hearts','3'), makeCard('clubs','3'), makeCard('diamonds','3'),
-                    makeCard('hearts','5'), makeCard('clubs','5'), makeCard('diamonds','5'),
-                    makeCard('spades','9')
-                ];
-                cpu.hand = [
-                    makeCard('spades','2'), makeCard('clubs','7'), makeCard('hearts','8'),
-                    makeCard('diamonds','9'), makeCard('spades','10'), makeCard('clubs','4'),
-                    makeCard('hearts','Q')
-                ];
-                G = {
-                    players: [you, cpu],
-                    deck: [
-                        makeCard('spades','J'), makeCard('clubs','6'), makeCard('diamonds','A'),
-                        makeCard('spades','4'), makeCard('diamonds','6'), makeCard('clubs','8')
-                    ],
-                    discard: [makeCard('hearts','K')],
-                    melds: [],
-                    cur: 0,
-                    contract: 0,
-                    phase: 'draw',
-                    drawn: false,
-                    buyQ: [],
-                    buyer: -1,
-                    started: true,
-                    hostId: L.myId,
-                    difficulty: 'easy',
-                    deadCards: []
-                };
-            }
-            
-            L.isHost = true;
-            L.isOnline = false;
-            L.myId = 'human';
-            L.myName = 'You';
-            L.diff = 'easy';
-            L.sel = [];
-            tutorialStep = null;
-            setTutorialStep(tutorialSteps[0].id);
-            showScreen('game-screen');
-            render();
-        }
-
-        function exitTutorial() {
-            if (!L.tutorial) return;
-            L.tutorial = false;
-            tutorialStep = null;
-            hideTutorialTip();
-            showScreen('title-screen');
-        }
-
-        function setTutorialStep(id) {
-            tutorialStep = id;
-            const step = tutorialSteps.find(s => s.id === id);
-            const tip = document.getElementById('tutorial-tip');
-            const textEl = document.getElementById('tutorial-text');
-            if (!tip || !textEl) return;
-            if (!step) { tip.classList.remove('active'); return; }
-            textEl.textContent = step.text;
-            tip.classList.add('active');
-        }
-
-        function hideTutorialTip() {
-            const tip = document.getElementById('tutorial-tip');
-            if (tip) tip.classList.remove('active');
-        }
-
-        function advanceTutorial(event) {
-            if (!L.tutorial) return;
-            const idx = tutorialSteps.findIndex(s => s.id === tutorialStep);
-            const step = tutorialSteps[idx];
-            if (!step) return;
-            // Custom selection triggers
-            if (event === 'selected-basic' && tutorialLevel === 'basic' && tutorialStep === 'select') {
-                setTutorialStep('lay');
-                return;
-            }
-            if (event === 'selected-adv' && tutorialLevel === 'advanced' && tutorialStep === 'select-run') {
-                setTutorialStep('lay');
-                return;
-            }
-            if (step.trigger && step.trigger !== event) return;
-            const next = tutorialSteps[idx + 1];
-            if (next) {
-                setTutorialStep(next.id);
-            } else {
-                setTutorialStep('done');
-                modal('Tutorial Complete', `<p>${tutorialLevel === 'advanced' ? 'Great! You bought a discard and made a high-A run.' : 'Great job! You drew, laid two sets, and discarded.'}</p><p>Start a real game from the menu.</p>`, [
-                    {text:'Back to Menu', cls:'btn-primary', fn: exitTutorial},
-                    {text:'Replay Tutorial', cls:'btn-secondary', fn: startTutorial}
-                ]);
-            }
-        }
-
-        // Quick start solo using current selections (fallback to defaults)
-        function quickStartSolo() {
-            const nameEl = document.getElementById('solo-name');
-            nameEl.value = nameEl.value.trim() || 'You';
-            
-            // Ensure we have a selected player count
-            let playerBtn = document.querySelector('#solo-player-grid .selected');
-            if (!playerBtn) {
-                playerBtn = document.querySelector('#solo-player-grid [data-val="3"]');
-                playerBtn?.classList.add('selected');
-            }
-            
-            // Ensure we have a selected difficulty
-            let diffBtn = document.querySelector('#diff-grid .selected');
-            if (!diffBtn) {
-                diffBtn = document.querySelector('#diff-grid [data-val="easy"]');
-                diffBtn?.classList.add('selected');
-            }
-            
-            startSoloGame();
         }
 
         // Init Game
@@ -1961,18 +1484,6 @@
                 ti.textContent = '⏳ ' + (G.players[G.cur]?.name || '') + "'s turn";
                 ti.className = 'turn-indicator waiting';
             }
-            
-            const cpuStatusEl = document.getElementById('cpu-status');
-            if (cpuStatusEl) {
-                let cpuText = '';
-                if (G.phase === 'buying' && G.players[G.buyer]?.cpu && !amBuying()) {
-                    cpuText = `${G.players[G.buyer].name} is deciding...`;
-                } else if (G.players[G.cur]?.cpu) {
-                    cpuText = G.drawn ? `${G.players[G.cur].name} is playing...` : `${G.players[G.cur].name} is drawing...`;
-                }
-                cpuStatusEl.textContent = cpuText;
-                cpuStatusEl.className = 'cpu-status' + (cpuText ? ' active' : '');
-            }
 
             document.getElementById('opp-row').innerHTML = G.players.map((p, i) => {
                 if (p.id === L.myId) return '';
@@ -2043,74 +1554,6 @@
             joker: 'joker.jpeg',  // Will be set by loadCustomImages
             queen: 'queen.jpeg'   // Will be set by loadCustomImages
         };
-
-        // Sound effects (small synthesized tones)
-        const SFX = {
-            enabled: localStorage.getItem('sfxEnabled') !== 'false',
-            unlocked: false,
-            ctx: null,
-            defs: {
-                draw:   {freq: 340, to: 280, dur: 0.14, type: 'triangle', vol: 0.08},
-                discard:{freq: 190, to: 140, dur: 0.15, type: 'sawtooth', vol: 0.08},
-                lay:    {freq: 520, to: 680, dur: 0.2,  type: 'square',   vol: 0.1 },
-                add:    {freq: 430, to: 560, dur: 0.18, type: 'triangle', vol: 0.08},
-                win:    {freq: 620, to: 900, dur: 0.4,  type: 'square',   vol: 0.12}
-            }
-        };
-        
-        function getAudioCtx() {
-            if (!SFX.enabled) return null;
-            if (!SFX.ctx) {
-                const AC = window.AudioContext || window.webkitAudioContext;
-                if (!AC) return null;
-                SFX.ctx = new AC();
-            }
-            if (SFX.ctx.state === 'suspended') SFX.ctx.resume();
-            return SFX.ctx;
-        }
-        
-        function unlockAudio() {
-            if (SFX.unlocked) return;
-            SFX.unlocked = true;
-            const ctx = getAudioCtx();
-            if (ctx && ctx.state === 'suspended') ctx.resume();
-        }
-        
-        function playSound(name) {
-            if (!SFX.enabled || !SFX.unlocked) return;
-            const def = SFX.defs[name];
-            const ctx = getAudioCtx();
-            if (!ctx || !def) return;
-            const now = ctx.currentTime;
-            const osc = ctx.createOscillator();
-            const gain = ctx.createGain();
-            osc.type = def.type || 'sine';
-            osc.frequency.setValueAtTime(def.freq, now);
-            if (def.to) osc.frequency.linearRampToValueAtTime(def.to, now + def.dur * 0.9);
-            gain.gain.setValueAtTime(0.0001, now);
-            gain.gain.linearRampToValueAtTime(def.vol || 0.08, now + 0.01);
-            gain.gain.exponentialRampToValueAtTime(0.0001, now + def.dur);
-            osc.connect(gain).connect(ctx.destination);
-            osc.start(now);
-            osc.stop(now + def.dur + 0.05);
-        }
-        
-        function toggleSound() {
-            SFX.enabled = !SFX.enabled;
-            localStorage.setItem('sfxEnabled', SFX.enabled);
-            updateSoundToggle();
-            if (SFX.enabled) {
-                unlockAudio();
-                playSound('draw');
-            }
-        }
-        
-        function updateSoundToggle() {
-            const btn = document.getElementById('sound-toggle');
-            if (!btn) return;
-            btn.textContent = SFX.enabled ? '🔊' : '🔇';
-            btn.title = SFX.enabled ? 'Sound on' : 'Sound off';
-        }
         
         // Check if a card is "dead" (buried in discard pile, not the top card)
         function isDeadCard(c) {
@@ -2126,15 +1569,15 @@
             const sel = idx !== null && L.sel.includes(idx) ? 'selected' : '';
             const isDead = isDeadCard(c);
             const deadClass = isDead ? 'dead-card' : '';
-            const click = ''; // click handled via pointer for reliability
-            const drag = hand && idx !== null && !IS_TOUCH ? `draggable="true" data-idx="${idx}"` : '';
+            const click = hand && idx !== null ? `onclick="toggleCard(${idx})"` : '';
+            const drag = hand && idx !== null ? `draggable="true" data-idx="${idx}"` : '';
             const deadOverlay = isDead ? '<div class="card-dead-overlay">💀</div>' : '';
             
             // Custom Joker card
             if (c.rank === 'JOKER') {
                 const style = CUSTOM_CARDS.jokerData ? `style="background-image: url('${CUSTOM_CARDS.jokerData}')"` : '';
                 const cls = CUSTOM_CARDS.jokerData ? 'wild joker-custom' : 'wild';
-                return `<div class="card card-front card-appear ${cls} ${sel} ${deadClass}" ${style} ${drag} onpointerdown="cardPointer(event, ${idx})">
+                return `<div class="card card-front card-appear ${cls} ${sel} ${deadClass}" ${style} ${click} ${drag}>
                     ${deadOverlay}
                     <span class="card-rank">J</span>
                     <span class="card-suit">🃏</span>
@@ -2145,7 +1588,7 @@
             if (c.rank === 'Q') {
                 const style = CUSTOM_CARDS.queenData ? `style="background-image: url('${CUSTOM_CARDS.queenData}')"` : '';
                 const cls = CUSTOM_CARDS.queenData ? `${c.suit} queen-custom` : c.suit;
-                return `<div class="card card-front card-appear ${cls} ${sel} ${deadClass}" ${style} ${drag} onpointerdown="cardPointer(event, ${idx})">
+                return `<div class="card card-front card-appear ${cls} ${sel} ${deadClass}" ${style} ${click} ${drag}>
                     ${deadOverlay}
                     <span class="card-rank">Q</span>
                     <span class="card-suit">${SUIT_SYM[c.suit]}</span>
@@ -2155,7 +1598,7 @@
             // Regular cards
             const cls = c.wild ? 'wild' : c.suit;
             const cnt = `${deadOverlay}<span class="card-rank">${c.rank}</span><span class="card-suit">${SUIT_SYM[c.suit]}</span>`;
-            return `<div class="card card-front card-appear ${cls} ${sel} ${deadClass}" ${drag} onpointerdown="cardPointer(event, ${idx})">${cnt}</div>`;
+            return `<div class="card card-front card-appear ${cls} ${sel} ${deadClass}" ${click} ${drag}>${cnt}</div>`;
         }
 
         function updateBtns() {
@@ -2174,7 +1617,6 @@
                 moveLeft.disabled = L.sel.length !== 1 || L.sel[0] === 0;
                 moveRight.disabled = L.sel.length !== 1 || L.sel[0] >= me.hand.length - 1;
             }
-            updateSelectionBadge();
         }
 
         // Helpers
@@ -2193,62 +1635,18 @@
             const x = L.sel.indexOf(i);
             if (x > -1) L.sel.splice(x, 1);
             else L.sel.push(i);
-            if (L.tutorial) {
-                const needed = tutorialStep === 'select' ? 6 : (tutorialStep === 'select-run' ? 5 : 0);
-                if (needed && L.sel.length >= needed) {
-                    advanceTutorial(tutorialLevel === 'advanced' ? 'selected-adv' : 'selected-basic');
-                }
-            }
-            updateSelectionBadge();
             render();
         }
-        function cardPointer(e, idx) {
-            if (!myTurn()) return;
-            if (e) {
-                e.preventDefault();
-                e.stopPropagation();
-            }
-            toggleCard(idx);
-        }
 
-        function clearSelection() {
-            L.sel = [];
-            updateSelectionBadge();
-            render();
-        }
-        function updateSelectionBadge() {
-            const el = document.getElementById('sel-badge');
-            if (!el) return;
-            const count = L.sel.length;
-            el.textContent = count + ' selected';
-        }
-
-        let sortMode = 'suit'; // suit | rank
-        function toggleSortMode() {
-            sortMode = sortMode === 'suit' ? 'rank' : 'suit';
-            document.getElementById('sort-mode-btn').textContent = 'Sort: ' + (sortMode === 'suit' ? 'Suit' : 'Rank');
-        }
-        function toggleWildPos() {
-            if (wildPos === 'auto') wildPos = 'front';
-            else if (wildPos === 'front') wildPos = 'end';
-            else wildPos = 'auto';
-            document.getElementById('wild-pos-btn').textContent = 'Wild: ' + (wildPos.charAt(0).toUpperCase() + wildPos.slice(1));
-        }
         function sortHand() {
             const me = getMe();
             me.hand.sort((a, b) => {
                 if (a.wild && !b.wild) return 1;
                 if (!a.wild && b.wild) return -1;
-                if (sortMode === 'suit') {
-                    if (a.suit !== b.suit) return SUITS.indexOf(a.suit) - SUITS.indexOf(b.suit);
-                    return sortVal(a.rank) - sortVal(b.rank);
-                } else {
-                    if (sortVal(a.rank) !== sortVal(b.rank)) return sortVal(a.rank) - sortVal(b.rank);
-                    return SUITS.indexOf(a.suit) - SUITS.indexOf(b.suit);
-                }
+                if (a.suit !== b.suit) return SUITS.indexOf(a.suit) - SUITS.indexOf(b.suit);
+                return RANK_VAL[a.rank] - RANK_VAL[b.rank];
             });
             L.sel = [];
-            updateSelectionBadge();
             sync();
         }
         
@@ -2260,8 +1658,7 @@
             // Swap with card to the left
             [me.hand[idx], me.hand[idx - 1]] = [me.hand[idx - 1], me.hand[idx]];
             L.sel = [idx - 1]; // Keep the same card selected
-            updateSelectionBadge();
-            sync();
+            render();
         }
         
         function moveCardRight() {
@@ -2272,8 +1669,7 @@
             // Swap with card to the right
             [me.hand[idx], me.hand[idx + 1]] = [me.hand[idx + 1], me.hand[idx]];
             L.sel = [idx + 1]; // Keep the same card selected
-            updateSelectionBadge();
-            sync();
+            render();
         }
 
         // Drag and drop for reordering cards
@@ -2326,32 +1722,77 @@
                 render();
             });
             
-            // Touch drag disabled; rely on tap + move arrows for more reliable ordering on iOS
+            // Touch support for mobile
+            let touchDragIdx = null;
+            let touchTimeout = null;
+            let touchCard = null;
+            
+            handBox.addEventListener('touchstart', (e) => {
+                const card = e.target.closest('.card[data-idx]');
+                if (!card) return;
+                
+                touchCard = card;
+                touchTimeout = setTimeout(() => {
+                    touchDragIdx = parseInt(card.dataset.idx);
+                    card.classList.add('dragging');
+                    navigator.vibrate && navigator.vibrate(50);
+                }, 300); // Hold for 300ms to start drag
+            }, { passive: true });
+            
+            handBox.addEventListener('touchmove', (e) => {
+                if (touchTimeout) {
+                    clearTimeout(touchTimeout);
+                    touchTimeout = null;
+                }
+                
+                if (touchDragIdx === null) return;
+                e.preventDefault();
+                
+                const touch = e.touches[0];
+                const elem = document.elementFromPoint(touch.clientX, touch.clientY);
+                const card = elem?.closest('.card[data-idx]');
+                
+                document.querySelectorAll('.card.drag-over').forEach(c => c.classList.remove('drag-over'));
+                if (card && parseInt(card.dataset.idx) !== touchDragIdx) {
+                    card.classList.add('drag-over');
+                }
+            }, { passive: false });
+            
+            handBox.addEventListener('touchend', (e) => {
+                if (touchTimeout) {
+                    clearTimeout(touchTimeout);
+                    touchTimeout = null;
+                }
+                
+                if (touchDragIdx === null) {
+                    touchCard = null;
+                    return;
+                }
+                
+                const touch = e.changedTouches[0];
+                const elem = document.elementFromPoint(touch.clientX, touch.clientY);
+                const card = elem?.closest('.card[data-idx]');
+                
+                if (card) {
+                    const dropIdx = parseInt(card.dataset.idx);
+                    if (dropIdx !== touchDragIdx) {
+                        const me = getMe();
+                        const [draggedCard] = me.hand.splice(touchDragIdx, 1);
+                        me.hand.splice(dropIdx, 0, draggedCard);
+                        L.sel = [];
+                        render();
+                    }
+                }
+                
+                document.querySelectorAll('.card.dragging').forEach(c => c.classList.remove('dragging'));
+                document.querySelectorAll('.card.drag-over').forEach(c => c.classList.remove('drag-over'));
+                touchDragIdx = null;
+                touchCard = null;
+            });
         }
         
         // Initialize drag drop when page loads
-        document.addEventListener('DOMContentLoaded', () => {
-            setupDragDrop();
-            updateSoundToggle();
-            loadSettings();
-            // Unlock audio after first user gesture to avoid autoplay blocking
-            window.addEventListener('pointerdown', unlockAudio, {once: true});
-            window.addEventListener('keydown', unlockAudio, {once: true});
-            registerServiceWorker();
-            if (IS_TOUCH) document.body.classList.add('touch');
-            initClippy();
-            // Expose clippy toggle in modal
-            const clippyToggle = document.createElement('button');
-            clippyToggle.className = 'btn btn-secondary btn-sm';
-            clippyToggle.textContent = 'Toggle Tips';
-            clippyToggle.style.marginTop = '10px';
-            clippyToggle.onclick = () => {
-                const enabled = localStorage.getItem('clippyEnabled') === 'true';
-                toggleClippySetting(!enabled);
-                toast(enabled ? 'Tips hidden' : 'Tips enabled');
-            };
-            document.getElementById('title-screen')?.querySelector('.menu-buttons')?.appendChild(clippyToggle);
-        });
+        document.addEventListener('DOMContentLoaded', setupDragDrop);
 
         // Draw
         function drawDeck() {
@@ -2362,8 +1803,6 @@
             getMe().hand.push(G.deck.pop());
             G.drawn = true;
             G.phase = 'play';
-            playSound('draw');
-            advanceTutorial('after-draw');
             sync();
         }
 
@@ -2394,8 +1833,6 @@
             getMe().hand.push(G.discard.pop());
             G.drawn = true;
             G.phase = 'play';
-            playSound('draw');
-            advanceTutorial('after-draw');
             sync();
         }
 
@@ -2428,8 +1865,6 @@
             G.discard.push(card);
             me.hand.splice(L.sel[0], 1);
             L.sel = [];
-            playSound('discard');
-            advanceTutorial('discarded');
             
             // Check if player went out (must have laid down AND have 0 cards)
             if (!me.hand.length && me.laid) { 
@@ -2934,8 +2369,6 @@
             me.laid = true;
             L.sel = [];
             toast('Laid down!');
-            playSound('lay');
-            advanceTutorial('laid');
             
             // Contract 7: no discard, win immediately if all cards used
             if (isFinalContract() && !me.hand.length) { 
@@ -3029,64 +2462,58 @@
                 if (!bySuit[c.suit]) bySuit[c.suit] = [];
                 bySuit[c.suit].push(c);
             });
-
-            const attempt = (aceHigh) => {
-                for (const suit of SUITS) {
-                    // Need at least 1 natural card in this suit (can fill rest with wilds)
-                    if (!bySuit[suit] || bySuit[suit].length < 1) continue;
-                    const sc = bySuit[suit].sort((a,b) => runVal(a.rank, aceHigh) - runVal(b.rank, aceHigh));
+            for (const suit of SUITS) {
+                // Need at least 1 natural card in this suit (can fill rest with wilds)
+                if (!bySuit[suit] || bySuit[suit].length < 1) continue;
+                const sc = bySuit[suit].sort((a,b) => RANK_VAL[a.rank] - RANK_VAL[b.rank]);
+                
+                // Try starting from each natural card
+                for (let st = 0; st < sc.length; st++) {
+                    let run = [sc[st]];
+                    let aw = [...wilds];
+                    let lastVal = RANK_VAL[sc[st].rank];
                     
-                    // Try starting from each natural card
-                    for (let st = 0; st < sc.length; st++) {
-                        let run = [sc[st]];
-                        let aw = [...wilds];
-                        let lastVal = runVal(sc[st].rank, aceHigh);
+                    // Try to extend forward through remaining cards
+                    for (let j = st + 1; j < sc.length; j++) {
+                        const nextVal = RANK_VAL[sc[j].rank];
+                        const gap = nextVal - lastVal - 1;
                         
-                        // Try to extend forward through remaining cards
-                        for (let j = st + 1; j < sc.length; j++) {
-                            const nextVal = runVal(sc[j].rank, aceHigh);
-                            const gap = nextVal - lastVal - 1;
-                            
-                            if (gap === 0) {
-                                // Consecutive - just add it
-                                run.push(sc[j]);
-                                lastVal = nextVal;
-                            } else if (gap > 0 && gap <= aw.length) {
-                                // Fill gap with wilds
-                                for (let g = 0; g < gap; g++) run.push(aw.shift());
-                                run.push(sc[j]);
-                                lastVal = nextVal;
-                            } else if (gap < 0) {
-                                // Duplicate rank - skip
-                                continue;
-                            } else {
-                                // Gap too big - stop extending
-                                break;
-                            }
+                        if (gap === 0) {
+                            // Consecutive - just add it
+                            run.push(sc[j]);
+                            lastVal = nextVal;
+                        } else if (gap > 0 && gap <= aw.length) {
+                            // Fill gap with wilds
+                            for (let g = 0; g < gap; g++) run.push(aw.shift());
+                            run.push(sc[j]);
+                            lastVal = nextVal;
+                        } else if (gap < 0) {
+                            // Duplicate rank - skip
+                            continue;
+                        } else {
+                            // Gap too big - stop extending
+                            break;
                         }
-                        
-                        // Can we extend with wilds at the end?
-                        const maxVal = aceHigh ? 14 : 13;
-                        while (run.length < 4 && aw.length > 0 && lastVal < maxVal) {
-                            run.push(aw.shift());
-                            lastVal++;
-                        }
-                        
-                        // Can we extend with wilds at the beginning?
-                        let firstVal = runVal(sc[st].rank, aceHigh);
-                        while (run.length < 4 && aw.length > 0 && firstVal > 1) {
-                            run.unshift(aw.shift());
-                            firstVal--;
-                        }
-                        
-                        const naturals = run.filter(x => !x.wild).length;
-                        if (run.length >= 4 && naturals >= 3) return adjustRunOrder(run);
                     }
+                    
+                    // Can we extend with wilds at the end?
+                    while (run.length < 4 && aw.length > 0 && lastVal < 13) {
+                        run.push(aw.shift());
+                        lastVal++;
+                    }
+                    
+                    // Can we extend with wilds at the beginning?
+                    let firstVal = RANK_VAL[sc[st].rank];
+                    while (run.length < 4 && aw.length > 0 && firstVal > 1) {
+                        run.unshift(aw.shift());
+                        firstVal--;
+                    }
+                    
+                    const naturals = run.filter(x => !x.wild).length;
+                    if (run.length >= 4 && naturals >= 3) return run;
                 }
-                return null;
-            };
-            
-            return attempt(false) || attempt(true);
+            }
+            return null;
         }
 
         // Add to Meld
@@ -3124,17 +2551,12 @@
             if (nat.length < 3) return false;
             const suit = nat[0].suit;
             if (!nat.every(c => c.suit === suit)) return false;
-            
-            const passes = (aceHigh) => {
-                const sorted = [...nat].sort((a,b) => runVal(a.rank, aceHigh) - runVal(b.rank, aceHigh));
-                const min = runVal(sorted[0].rank, aceHigh);
-                const max = runVal(sorted[sorted.length-1].rank, aceHigh);
-                if (max - min + 1 > cards.length) return false;
-                const ranks = new Set(sorted.map(c => runVal(c.rank, aceHigh)));
-                return ranks.size === sorted.length;
-            };
-            
-            return passes(false) || passes(true);
+            const sorted = [...nat].sort((a,b) => RANK_VAL[a.rank] - RANK_VAL[b.rank]);
+            const wilds = cards.filter(c => c.wild).length;
+            const min = RANK_VAL[sorted[0].rank], max = RANK_VAL[sorted[sorted.length-1].rank];
+            if (max - min + 1 > cards.length) return false;
+            const ranks = new Set(sorted.map(c => c.rank));
+            return ranks.size === sorted.length;
         }
 
         function addTo(i) {
@@ -3144,15 +2566,10 @@
             const cards = L.sel.map(x => me.hand[x]);
             if (!canAdd(cards, m)) return toast("Can't add");
             cards.forEach(c => m.cards.push(c));
-            if (m.type === 'Run') {
-                const nat = m.cards.filter(c => !c.wild).sort((a,b)=>runVal(a.rank,true)-runVal(b.rank,true));
-                const wilds = m.cards.filter(c => c.wild);
-                m.cards = adjustRunOrder([...nat, ...wilds]);
-            }
+            if (m.type === 'Run') m.cards.sort((a,b) => a.wild ? 1 : b.wild ? -1 : RANK_VAL[a.rank] - RANK_VAL[b.rank]);
             [...L.sel].sort((a,b)=>b-a).forEach(x => me.hand.splice(x, 1));
             L.sel = [];
             toast('Added!');
-            playSound('add');
             
             // Contract 7 (index 6): win immediately if all cards played into runs
             if (isFinalContract() && !me.hand.length && me.laid) { 
@@ -3174,7 +2591,6 @@
 
         // End Round
         function endRound(wi) {
-            if (L.tutorial) return;
             cpuRunning = false;
             cpuBuyingRunning = false;
             const winner = G.players[wi];
@@ -3182,7 +2598,6 @@
             // Track round win
             analytics.roundsPlayed++;
             trackStat('roundWins', winner.name);
-            playSound('win');
             
             // Calculate points added this round
             const pointsAdded = {};
@@ -3284,9 +2699,14 @@
             const winner = sorted[0];
             const isHumanWinner = winner.human && !winner.cpu;
             
-            // Track final round win (local only, no leaderboard)
+            // Track final round win
             analytics.roundsPlayed++;
             trackStat('roundWins', winner.name);
+            
+            // Record win to leaderboard if human won
+            if (isHumanWinner) {
+                recordWin(winner.name);
+            }
             
             // Show epic win animation if human won
             if (isHumanWinner) {
@@ -3378,8 +2798,6 @@
 
         // ==================== LEADERBOARD ====================
         
-        const WIN_COOLDOWN_MS = 10000;
-        
         // Get or create a unique device ID
         function getDeviceId() {
             let deviceId = localStorage.getItem('deviceId');
@@ -3390,9 +2808,42 @@
             return deviceId;
         }
         
-        // Leaderboard removed for now
-        async function recordWin() { return; }
-        async function recordCPUWin() { return; }
+        async function recordWin(name) {
+            if (!name || name.trim() === '') return;
+            const safeName = name.trim().substring(0, 12).replace(/[.#$\/\[\]]/g, '_');
+            const deviceId = getDeviceId();
+            
+            try {
+                const ref = db.ref('leaderboard/' + safeName);
+                const snap = await ref.once('value');
+                const current = snap.val();
+                
+                if (current) {
+                    // Name already exists - check if it belongs to this device
+                    if (current.deviceId && current.deviceId === deviceId) {
+                        // Same device - just update wins
+                        await ref.set({ 
+                            name: safeName, 
+                            wins: current.wins + 1,
+                            deviceId: deviceId,
+                            pin: current.pin
+                        });
+                        toast('🏆 Win recorded!');
+                    } else if (current.pin) {
+                        // Different device but has PIN - ask for it
+                        showPinPrompt(safeName, current, ref, deviceId);
+                    } else {
+                        // Old entry without device/pin - let them claim it with a PIN
+                        showSetPinPrompt(safeName, current, ref, deviceId);
+                    }
+                } else {
+                    // New entry - ask to set a PIN
+                    showNewPinPrompt(safeName, ref, deviceId);
+                }
+            } catch (e) {
+                console.log('Could not record win:', e);
+            }
+        }
         
         function showPinPrompt(safeName, current, ref, deviceId) {
             modal('🔐 Enter PIN', `
@@ -3456,9 +2907,17 @@
             modal('🔐 Protect Your Name', `
                 <p style="margin-bottom:15px;">Set a 4-digit PIN to protect "${safeName}":</p>
                 <input type="tel" id="pin-input" class="form-input" placeholder="0000" maxlength="4" style="text-align:center;font-size:1.5rem;letter-spacing:10px;">
-                <p style="margin-top:10px;font-size:0.85rem;color:var(--text-muted);">Required to record wins for this name.</p>
+                <p style="margin-top:10px;font-size:0.85rem;color:var(--text-muted);">This prevents others from using your name.</p>
             `, [
-                {text: 'Cancel', cls: 'btn-secondary'},
+                {text: 'Skip', cls: 'btn-secondary', fn: async () => {
+                    await ref.set({ 
+                        name: safeName, 
+                        wins: 1,
+                        deviceId: deviceId
+                    });
+                    closeModal();
+                    toast('🏆 Win recorded!');
+                }},
                 {text: 'Set PIN', cls: 'btn-primary', fn: async () => {
                     const pin = document.getElementById('pin-input').value;
                     if (pin.length === 4 && /^\d+$/.test(pin)) {
@@ -3468,7 +2927,6 @@
                             deviceId: deviceId,
                             pin: pin
                         });
-                        localStorage.setItem('lastWinTs', String(Date.now()));
                         closeModal();
                         toast('🏆 Win recorded & PIN set!');
                     } else {
@@ -3480,7 +2938,38 @@
         }
 
         async function showLeaderboard() {
-            modal('Leaderboard Disabled', '<div style="text-align:center;color:var(--text-muted);">Coming soon.</div>', [{text:'Close', cls:'btn-secondary'}]);
+            let html = '<div style="text-align:center;color:var(--text-muted);">Loading...</div>';
+            modal('🏆 Global Leaderboard', html, [{text:'Close', cls:'btn-secondary'}]);
+            
+            const myDeviceId = getDeviceId();
+            
+            try {
+                const snap = await db.ref('leaderboard').orderByChild('wins').limitToLast(20).once('value');
+                const data = snap.val();
+                
+                if (!data) {
+                    document.getElementById('modal-body').innerHTML = '<div style="text-align:center;color:var(--text-muted);">No wins recorded yet. Be the first!</div>';
+                    return;
+                }
+                
+                // Convert to array and sort by wins descending
+                const players = Object.values(data).sort((a, b) => b.wins - a.wins);
+                
+                html = players.map((p, i) => {
+                    const isMe = p.deviceId === myDeviceId;
+                    const hasPin = p.pin ? '🔒' : '';
+                    return `
+                    <div class="leaderboard-row ${isMe ? 'leaderboard-me' : ''}">
+                        <span class="leaderboard-rank">${i === 0 ? '🥇' : i === 1 ? '🥈' : i === 2 ? '🥉' : (i + 1)}</span>
+                        <span class="leaderboard-name">${p.name}${isMe ? ' (you)' : ''} ${hasPin}</span>
+                        <span class="leaderboard-wins">${p.wins} win${p.wins !== 1 ? 's' : ''}</span>
+                    </div>
+                `}).join('');
+                
+                document.getElementById('modal-body').innerHTML = html;
+            } catch (e) {
+                document.getElementById('modal-body').innerHTML = '<div style="text-align:center;color:var(--text-muted);">Could not load leaderboard</div>';
+            }
         }
 
         // Rules
